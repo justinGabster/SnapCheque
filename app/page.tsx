@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 type Screen = "dashboard" | "scanner" | "verification" | "confirmation" | "tracker";
 
@@ -85,52 +85,59 @@ export default function SnapCheque() {
 // --- SCREEN 1: Dashboard ---
 function Dashboard({ balance, format, onScan }: any) {
   return (
-    <div className="flex-col w-full h-full animate-slide-up" style={{ animationDuration: '0.2s' }}>
+    <div className="flex-col w-full animate-slide-up overflow-y-auto" style={{ position: 'absolute', inset: 0, animationDuration: '0.2s' }}>
       <div className="dashboard-header">
-        <div className="flex justify-between items-center mb-4">
-          <div className="flex items-center gap-2">
-            <div style={{ width: '32px', height: '32px', background: 'white', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-              <span style={{ color: 'var(--primary-blue)', fontWeight: 'bold', fontSize: '12px'}}>GC</span>
+        <div className="flex justify-between items-center mb-6">
+          <div className="flex items-center gap-3">
+            <div style={{ width: '40px', height: '40px', borderRadius: '50%', overflow: 'hidden', background: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, border: '2px solid rgba(255,255,255,0.2)' }}>
+              <img src="/gcash-logo.jpg" alt="GCash Logo" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
             </div>
             <div>
-              <div className="font-bold text-sm" style={{ color: 'white'}}>Aling Nena's LPG</div>
+              <div className="font-bold text-md" style={{ color: 'white'}}>Aling Nena's LPG</div>
               <div className="text-xs" style={{ color: 'white', opacity: 0.8}}>GCash Negosyo Profile</div>
             </div>
           </div>
         </div>
-        <p className="text-sm" style={{ color: 'white', opacity: 0.8}}>Available Balance</p>
-        <h1 className="text-3xl mt-1" style={{ color: 'white'}}>{format(balance)}</h1>
+        <div style={{ background: 'rgba(255, 255, 255, 0.15)', padding: '16px 20px', borderRadius: '16px', marginTop: '12px', border: '1px solid rgba(255, 255, 255, 0.2)', boxShadow: '0 4px 12px rgba(0,0,0,0.05)' }}>
+          <p className="text-sm" style={{ color: 'white', opacity: 0.9}}>Available Balance</p>
+          <h1 className="text-4xl mt-1" style={{ color: 'white', letterSpacing: '-0.5px'}}>{format(balance)}</h1>
+        </div>
       </div>
       
-      <div className="px-4 pb-6 flex-1">
-        <div className="card hero-card shadow-lg">
-          <h3 className="mb-2" style={{ color: 'white'}}>SnapCheque</h3>
-          <p className="text-sm" style={{ color: 'white', opacity: 0.9}}>
-            Turn post-dated checks into instant cash today with Fuse Lending.
-          </p>
-        </div>
-        
-        <div className="mt-6 mb-6">
-          <button className="btn btn-primary" onClick={onScan}>
-            <span style={{ color: 'white'}}>Scan Post-Dated Check</span>
+      <div className="px-6 pb-8 flex-1" style={{ marginTop: '-24px', position: 'relative', zIndex: 10 }}>
+        <div className="card mb-8 flex-col gap-4" style={{ padding: '24px', background: 'white' }}>
+          <div className="flex items-start gap-4">
+            <div style={{ width: '48px', height: '48px', borderRadius: '16px', background: '#F0F9FF', color: 'var(--primary-blue)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z"/><circle cx="12" cy="13" r="3"/></svg>
+            </div>
+            <div>
+              <h3 style={{ color: 'var(--text-main)', marginBottom: '4px', fontSize: '18px' }}>SnapCheque</h3>
+              <p className="text-sm text-muted" style={{ lineHeight: '1.5' }}>
+                Turn your post-dated checks into instant cash today with Fuse Lending.
+              </p>
+            </div>
+          </div>
+          
+          <button className="btn btn-primary mt-2" onClick={onScan} style={{ boxShadow: '0 8px 16px rgba(0, 92, 238, 0.25)' }}>
+            <span style={{ color: 'white', fontWeight: 'bold' }}>Scan Post-Dated Check</span>
           </button>
         </div>
         
-        <div className="flex justify-between items-center mb-3">
-          <h4 style={{ color: 'var(--text-main)'}}>Recent Advances</h4>
-          <span className="text-xs text-primary font-medium cursor-pointer">View All</span>
+        <div className="flex justify-between items-center mb-4 px-1">
+          <h4 style={{ color: 'var(--text-main)', fontSize: '18px' }}>Recent Advances</h4>
+          <span className="text-xs font-bold text-primary cursor-pointer">View All</span>
         </div>
         
-        <div className="card flex-col gap-2 border-b" style={{ border: 'none', boxShadow: '0 2px 8px rgba(0,0,0,0.04)'}}>
+        <div className="card flex-col gap-3" style={{ padding: '20px', background: 'white', border: '1px solid var(--border-color)', boxShadow: 'none' }}>
           <div className="flex justify-between items-center">
-            <span className="font-bold text-lg">{format(25000)}</span>
-            <span className="text-xs font-bold" style={{ background: '#E6F8F3', color: '#00C48C', padding: '4px 8px', borderRadius: '4px'}}>
+            <span className="font-bold text-xl" style={{ color: 'var(--text-main)'}}>{format(25000)}</span>
+            <span className="text-xs font-bold" style={{ background: '#F0FDF4', color: '#16A34A', padding: '6px 12px', borderRadius: '8px', border: '1px solid #BBF7D0'}}>
               Advanced
             </span>
           </div>
           <div className="flex justify-between items-center">
-            <span className="text-xs text-muted">Clears in 12 days</span>
-            <span className="text-xs text-muted">BDO</span>
+            <span className="text-sm text-muted">Clears in 12 days</span>
+            <span className="text-sm font-bold text-muted">BDO</span>
           </div>
         </div>
       </div>
@@ -141,53 +148,152 @@ function Dashboard({ balance, format, onScan }: any) {
 // --- SCREEN 2: Scanner ---
 function Scanner({ onSelect, onCancel }: any) {
   const [isScanning, setIsScanning] = useState(false);
+  const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+  const videoRef = React.useRef<HTMLVideoElement>(null);
+  const timeoutRef = React.useRef<any>(null);
+  
+  useEffect(() => {
+    let stream: MediaStream | null = null;
+    async function startCamera() {
+      try {
+        // Force back camera on mobile devices
+        stream = await navigator.mediaDevices.getUserMedia({ 
+          video: { facingMode: { exact: 'environment' } } 
+        });
+      } catch (err) {
+        // Fallback for laptops or devices without a specific "environment" camera
+        try {
+          stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment' } });
+        } catch (errFallback) {
+          console.error("Camera access error:", errFallback);
+        }
+      }
+      
+      if (stream && videoRef.current) {
+        videoRef.current.srcObject = stream;
+      }
+    }
+    startCamera();
+    
+    return () => {
+      if (stream) {
+        stream.getTracks().forEach(track => track.stop());
+      }
+      if (timeoutRef.current) clearTimeout(timeoutRef.current);
+    };
+  }, []);
   
   const handleSelect = (check: any) => {
     setIsScanning(true);
-    setTimeout(() => {
+    timeoutRef.current = setTimeout(() => {
       onSelect(check);
     }, 1500);
   };
 
+  const handleCapture = () => {
+    setIsScanning(true);
+    timeoutRef.current = setTimeout(() => {
+      const randomCheck = DEMO_CHECKS[Math.floor(Math.random() * DEMO_CHECKS.length)];
+      onSelect(randomCheck);
+    }, 2000);
+  };
+  
+  const handleCancel = () => {
+    if (timeoutRef.current) clearTimeout(timeoutRef.current);
+    onCancel();
+  };
+
   return (
-    <div className="flex-col w-full h-full relative animate-slide-up" style={{ backgroundColor: '#111' }}>
-      <div className="p-4 flex justify-between items-center" style={{ position: 'absolute', top: 0, width: '100%', zIndex: 10 }}>
-        <button onClick={onCancel} style={{ background: 'rgba(255,255,255,0.2)', border: 'none', color: 'white', padding: '8px 12px', borderRadius: '20px', fontSize: '14px', cursor: 'pointer' }}>
+    <div className="flex-col w-full animate-slide-up" style={{ position: 'absolute', inset: 0, backgroundColor: '#111', overflow: 'hidden' }}>
+      <video 
+        ref={videoRef}
+        autoPlay
+        playsInline
+        muted
+        style={{
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          width: '100%',
+          height: '100%',
+          objectFit: 'cover',
+          zIndex: 0,
+        }}
+      />
+
+      <div className="p-4 flex justify-between items-center" style={{ position: 'absolute', top: 0, width: '100%', zIndex: 50 }}>
+        <button onClick={handleCancel} style={{ background: 'rgba(0,0,0,0.5)', border: 'none', color: 'white', padding: '10px 16px', borderRadius: '20px', fontSize: '14px', cursor: 'pointer', fontWeight: 'bold' }}>
           Cancel
         </button>
-        <span style={{ color: 'white', fontWeight: 'bold' }}>Scan Check</span>
-        <div style={{ width: '60px' }}></div>
+        <span style={{ color: 'white', fontWeight: 'bold', textShadow: '0 2px 4px rgba(0,0,0,0.5)' }}>Scan Check</span>
+        <div style={{ width: '80px' }}></div>
       </div>
 
-      <div className="flex-1 flex justify-center items-center relative p-4 mt-12">
-        <div style={{ width: '100%', height: '220px', border: '2px solid rgba(255,255,255,0.4)', borderRadius: '12px', position: 'relative', overflow: 'hidden' }}>
-          <div style={{ position: 'absolute', top: '-2px', left: '-2px', width: '20px', height: '20px', borderTop: '4px solid var(--accent-green)', borderLeft: '4px solid var(--accent-green)', borderTopLeftRadius: '12px' }}></div>
-          <div style={{ position: 'absolute', top: '-2px', right: '-2px', width: '20px', height: '20px', borderTop: '4px solid var(--accent-green)', borderRight: '4px solid var(--accent-green)', borderTopRightRadius: '12px' }}></div>
-          <div style={{ position: 'absolute', bottom: '-2px', left: '-2px', width: '20px', height: '20px', borderBottom: '4px solid var(--accent-green)', borderLeft: '4px solid var(--accent-green)', borderBottomLeftRadius: '12px' }}></div>
-          <div style={{ position: 'absolute', bottom: '-2px', right: '-2px', width: '20px', height: '20px', borderBottom: '4px solid var(--accent-green)', borderRight: '4px solid var(--accent-green)', borderBottomRightRadius: '12px' }}></div>
+      <div className="flex-1 flex justify-center items-center relative p-4 mt-12" style={{ zIndex: 10 }}>
+        <div style={{ width: '100%', height: '260px', border: '2px solid rgba(255,255,255,0.6)', borderRadius: '16px', position: 'relative', overflow: 'hidden', boxShadow: '0 0 0 9999px rgba(0,0,0,0.5)' }}>
+          <div style={{ position: 'absolute', top: '-2px', left: '-2px', width: '30px', height: '30px', borderTop: '4px solid var(--accent-green)', borderLeft: '4px solid var(--accent-green)', borderTopLeftRadius: '16px' }}></div>
+          <div style={{ position: 'absolute', top: '-2px', right: '-2px', width: '30px', height: '30px', borderTop: '4px solid var(--accent-green)', borderRight: '4px solid var(--accent-green)', borderTopRightRadius: '16px' }}></div>
+          <div style={{ position: 'absolute', bottom: '-2px', left: '-2px', width: '30px', height: '30px', borderBottom: '4px solid var(--accent-green)', borderLeft: '4px solid var(--accent-green)', borderBottomLeftRadius: '16px' }}></div>
+          <div style={{ position: 'absolute', bottom: '-2px', right: '-2px', width: '30px', height: '30px', borderBottom: '4px solid var(--accent-green)', borderRight: '4px solid var(--accent-green)', borderBottomRightRadius: '16px' }}></div>
           
           {isScanning && <div className="scan-line"></div>}
           
           <div className="absolute w-full text-center" style={{ top: '50%', transform: 'translateY(-50%)' }}>
-            <span style={{ color: 'white', backgroundColor: 'rgba(0,0,0,0.5)', padding: '8px 16px', borderRadius: '20px', fontSize: '14px' }}>
+            <span style={{ color: 'white', backgroundColor: 'rgba(0,0,0,0.7)', padding: '12px 24px', borderRadius: '24px', fontSize: '14px', fontWeight: 'bold', transition: 'opacity 0.3s', opacity: isScanning ? 1 : 0.8 }}>
               {isScanning ? 'Extracting details...' : 'Align check within frame'}
             </span>
           </div>
         </div>
       </div>
+
+      {/* Capture Button (Hidden when drawer is open) */}
+      <div className="absolute w-full flex justify-center" style={{ bottom: '90px', transition: 'all 0.3s ease', opacity: isDrawerOpen ? 0 : 1, pointerEvents: isDrawerOpen ? 'none' : 'auto', transform: isDrawerOpen ? 'translateY(20px)' : 'translateY(0)', zIndex: 15 }}>
+         <button 
+           onClick={handleCapture}
+           style={{ width: '72px', height: '72px', borderRadius: '50%', background: 'rgba(255,255,255,0.3)', border: '4px solid white', display: 'flex', justifyContent: 'center', alignItems: 'center', cursor: 'pointer', padding: 0 }}
+         >
+           <div style={{ width: '56px', height: '56px', borderRadius: '50%', background: 'white', transition: 'transform 0.1s' }} onMouseDown={(e) => e.currentTarget.style.transform = 'scale(0.9)'} onMouseUp={(e) => e.currentTarget.style.transform = 'scale(1)'}></div>
+         </button>
+      </div>
       
-      <div className="absolute w-full" style={{ bottom: 0, background: 'var(--background)', borderTopLeftRadius: '24px', borderTopRightRadius: '24px', padding: '24px 16px', zIndex: 20 }}>
-        <h3 className="mb-4" style={{ color: 'var(--text-main)' }}>Select Demo Check</h3>
-        <div className="flex-col gap-3">
-          {DEMO_CHECKS.map(c => (
-            <div key={c.id} className="card" style={{ padding: '16px', cursor: 'pointer', border: '1px solid var(--border-color)', boxShadow: 'none' }} onClick={() => handleSelect(c)}>
-              <div className="flex justify-between items-center mb-1">
-                <span className="font-bold text-lg" style={{ color: 'var(--text-main)'}}>₱{c.amount.toLocaleString()}</span>
-                <span className="text-xs font-medium" style={{ background: '#f3f4f6', padding: '4px 8px', borderRadius: '4px', color: 'var(--text-main)' }}>Due in {c.days} Days</span>
+      <div className="absolute w-full" style={{ 
+        bottom: 0, 
+        background: 'var(--background)', 
+        borderTopLeftRadius: '32px', 
+        borderTopRightRadius: '32px', 
+        padding: '16px 24px 32px 24px', 
+        zIndex: 20, 
+        boxShadow: '0 -8px 24px rgba(0,0,0,0.1)',
+        transform: isDrawerOpen ? 'translateY(0)' : 'translateY(calc(100% - 76px))',
+        transition: 'transform 0.4s cubic-bezier(0.4, 0, 0.2, 1)'
+      }}>
+        <div 
+          onClick={() => setIsDrawerOpen(!isDrawerOpen)}
+          style={{ display: 'flex', justifyContent: 'center', paddingBottom: '16px', cursor: 'pointer' }}
+        >
+          <div style={{ width: '40px', height: '5px', borderRadius: '3px', background: '#CBD5E1' }}></div>
+        </div>
+
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
+          <h3 style={{ color: 'var(--text-main)', margin: 0 }}>Simulate Demo Check</h3>
+          <button onClick={() => setIsDrawerOpen(!isDrawerOpen)} style={{ background: 'none', border: 'none', color: 'var(--primary-blue)', fontWeight: 'bold', cursor: 'pointer', fontSize: '14px' }}>
+            {isDrawerOpen ? 'Hide' : 'Show'}
+          </button>
+        </div>
+
+        <div style={{ opacity: isDrawerOpen ? 1 : 0, transition: 'opacity 0.3s', pointerEvents: isDrawerOpen ? 'auto' : 'none' }}>
+          <p className="text-xs text-muted mb-4">Point the camera at your printed check, then select the matching demo below to simulate extraction.</p>
+          <div className="flex-col gap-3">
+            {DEMO_CHECKS.map(c => (
+              <div key={c.id} className="card" style={{ padding: '16px 20px', cursor: 'pointer', border: '1px solid var(--border-color)', boxShadow: 'none', background: 'white' }} onClick={() => handleSelect(c)}>
+                <div className="flex justify-between items-center mb-1">
+                  <span className="font-bold text-xl" style={{ color: 'var(--text-main)'}}>₱{c.amount.toLocaleString()}</span>
+                  <span className="text-xs font-bold" style={{ background: '#f1f5f9', padding: '6px 10px', borderRadius: '8px', color: 'var(--text-main)' }}>Due in {c.days} Days</span>
+                </div>
+                <div className="text-sm text-muted">{c.bank} • {c.issuer}</div>
               </div>
-              <div className="text-xs text-muted">{c.bank} • {c.issuer}</div>
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
       </div>
     </div>
@@ -208,62 +314,62 @@ function Verification({ check, format, onConfirm, onCancel }: any) {
   const netAmount = check.amount - feeAmount;
 
   return (
-    <div className="flex-col w-full h-full animate-slide-up" style={{ backgroundColor: 'var(--background)' }}>
-      <div className="p-4 flex items-center bg-white border-b sticky top-0" style={{ zIndex: 10 }}>
+    <div className="flex-col animate-slide-up" style={{ position: 'absolute', inset: 0, backgroundColor: 'var(--background)' }}>
+      <div className="flex items-center bg-white border-b" style={{ padding: '16px', zIndex: 10 }}>
         <button onClick={onCancel} style={{ background: 'none', border: 'none', fontSize: '20px', marginRight: '16px', color: 'var(--text-main)', cursor: 'pointer' }}>←</button>
         <span className="font-bold text-lg" style={{ color: 'var(--text-main)' }}>Review Advance</span>
       </div>
 
-      <div className="p-4 flex-1 overflow-y-auto" style={{ paddingBottom: '100px' }}>
-        <div className="card mb-4" style={{ background: '#F0FDF4', border: '1px solid #BBF7D0', boxShadow: 'none' }}>
-          <h4 className="text-sm font-bold text-success mb-2">Fuse Lending Verification</h4>
-          <div className="flex-col gap-1 text-xs" style={{ color: '#166534' }}>
+      <div className="flex-1 flex-col gap-3" style={{ padding: '16px 16px 8px 16px' }}>
+        <div className="card" style={{ padding: '14px 16px', background: '#F0FDF4', border: '1px solid #BBF7D0', boxShadow: 'none' }}>
+          <h4 className="text-xs font-bold text-success mb-2">Fuse Lending Verification</h4>
+          <div className="flex-col gap-1" style={{ fontSize: '12px', color: '#166534' }}>
             <div className="flex items-center gap-2"><span>✔</span> Buyer Account Verified</div>
             <div className="flex items-center gap-2"><span>✔</span> Issuer GScore: 745 (Low Risk)</div>
             <div className="flex items-center gap-2"><span>✔</span> Clearing Partner Route: PCHC Approved</div>
           </div>
         </div>
 
-        <div className="card mb-4" style={{ boxShadow: '0 2px 8px rgba(0,0,0,0.04)' }}>
-          <h4 className="text-sm font-bold mb-3 border-b pb-2">Check Details</h4>
-          <div className="flex justify-between mb-2">
-            <span className="text-sm text-muted">Issuer</span>
-            <span className="text-sm font-medium">{check.issuer}</span>
+        <div className="card" style={{ padding: '14px 16px', boxShadow: '0 2px 8px rgba(0,0,0,0.04)' }}>
+          <h4 className="text-xs font-bold mb-2 border-b pb-2">Check Details</h4>
+          <div className="flex justify-between mb-1.5">
+            <span className="text-xs text-muted">Issuer</span>
+            <span className="text-xs font-medium">{check.issuer}</span>
           </div>
-          <div className="flex justify-between mb-2">
-            <span className="text-sm text-muted">Bank</span>
-            <span className="text-sm font-medium">{check.bank}</span>
+          <div className="flex justify-between mb-1.5">
+            <span className="text-xs text-muted">Bank</span>
+            <span className="text-xs font-medium">{check.bank}</span>
           </div>
-          <div className="flex justify-between mb-2">
-            <span className="text-sm text-muted">Check No.</span>
-            <span className="text-sm font-medium">{check.number}</span>
+          <div className="flex justify-between mb-1.5">
+            <span className="text-xs text-muted">Check No.</span>
+            <span className="text-xs font-medium">{check.number}</span>
           </div>
           <div className="flex justify-between">
-            <span className="text-sm text-muted">Maturity</span>
-            <span className="text-sm font-medium">{check.days} Days</span>
+            <span className="text-xs text-muted">Maturity</span>
+            <span className="text-xs font-medium">{check.days} Days</span>
           </div>
         </div>
 
-        <div className="card mb-6" style={{ boxShadow: '0 2px 8px rgba(0,0,0,0.04)' }}>
-          <h4 className="text-sm font-bold mb-3 border-b pb-2">Discounting Engine</h4>
-          <div className="flex justify-between mb-2">
-            <span className="text-sm text-muted">Face Value</span>
-            <span className="text-sm font-medium">{format(check.amount)}</span>
+        <div className="card" style={{ padding: '14px 16px', boxShadow: '0 2px 8px rgba(0,0,0,0.04)' }}>
+          <h4 className="text-xs font-bold mb-2 border-b pb-2">Discounting Engine</h4>
+          <div className="flex justify-between mb-1.5">
+            <span className="text-xs text-muted">Face Value</span>
+            <span className="text-xs font-medium">{format(check.amount)}</span>
           </div>
-          <div className="flex justify-between mb-3">
-            <span className="text-sm text-muted">Financing Fee ({percentage}%)</span>
-            <span className="text-sm font-medium" style={{ color: '#ef4444' }}>- {format(feeAmount)}</span>
+          <div className="flex justify-between mb-2.5">
+            <span className="text-xs text-muted">Financing Fee ({percentage}%)</span>
+            <span className="text-xs font-medium" style={{ color: '#ef4444' }}>- {format(feeAmount)}</span>
           </div>
-          <div className="border-t pt-3 flex justify-between items-center">
-            <span className="text-sm font-bold">Net Instant Cashout</span>
-            <span className="text-2xl font-bold text-success">{format(netAmount)}</span>
+          <div className="border-t pt-2.5 flex justify-between items-center">
+            <span className="text-xs font-bold">Net Instant Cashout</span>
+            <span className="text-lg font-bold text-success">{format(netAmount)}</span>
           </div>
         </div>
       </div>
       
-      <div className="p-4 bg-white border-t absolute w-full" style={{ bottom: 0, zIndex: 10 }}>
-        <button className="btn btn-primary" onClick={() => onConfirm(netAmount)}>
-          <span style={{ color: 'white' }}>Confirm & Advance {format(netAmount)}</span>
+      <div className="bg-white border-t" style={{ padding: '16px 16px 32px 16px', zIndex: 50, flexShrink: 0 }}>
+        <button className="btn btn-primary w-full" onClick={() => onConfirm(netAmount)}>
+          <span style={{ color: 'white', fontWeight: 'bold' }}>Confirm & Advance {format(netAmount)}</span>
         </button>
       </div>
     </div>
@@ -283,7 +389,7 @@ function Confirmation({ check, format, onNext, onHome }: any) {
   const netAmount = check.amount - feeAmount;
 
   return (
-    <div className="flex-col w-full h-full justify-center p-4 bg-white animate-slide-up text-center relative">
+    <div className="flex-col animate-slide-up text-center" style={{ position: 'absolute', inset: 0, backgroundColor: 'white', justifyContent: 'center', padding: '16px' }}>
       <div className="mb-6 flex justify-center">
         <div style={{ width: '80px', height: '80px', borderRadius: '50%', background: '#E6F8F3', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
           <span style={{ fontSize: '40px', color: '#00C48C' }}>✓</span>
@@ -325,13 +431,13 @@ function Confirmation({ check, format, onNext, onHome }: any) {
 // --- SCREEN 5: Tracker ---
 function Tracker({ check, format, onHome }: any) {
   return (
-    <div className="flex-col w-full h-full animate-slide-up" style={{ backgroundColor: 'var(--background)' }}>
-      <div className="p-4 flex items-center bg-white border-b sticky top-0" style={{ zIndex: 10 }}>
+    <div className="flex-col animate-slide-up" style={{ position: 'absolute', inset: 0, backgroundColor: 'var(--background)' }}>
+      <div className="flex items-center bg-white border-b" style={{ padding: '16px', zIndex: 10 }}>
         <button onClick={onHome} style={{ background: 'none', border: 'none', fontSize: '20px', marginRight: '16px', color: 'var(--text-main)', cursor: 'pointer' }}>←</button>
         <span className="font-bold text-lg" style={{ color: 'var(--text-main)' }}>Active Tracker</span>
       </div>
 
-      <div className="p-4 flex-1 overflow-y-auto">
+      <div className="flex-1 overflow-y-auto" style={{ padding: '16px', minHeight: 0 }}>
         <div className="card mb-4" style={{ boxShadow: '0 2px 8px rgba(0,0,0,0.04)' }}>
           <div className="flex justify-between items-center mb-6">
             <div>
